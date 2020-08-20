@@ -1,0 +1,418 @@
+body {
+    background-color: #1D212B;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    text-decoration-color: none;
+}
+
+    a:hover {
+        text-decoration: none;
+        text-decoration-color: none;
+    }
+
+.sidebar {
+    z-index: 999;
+    position: fixed;
+    background-color: #363636;
+    bottom: 0;
+    top: 0;
+    width: 25%;
+    min-width: 200px;
+    max-width: 300px;
+}
+
+    .sidebar > .sidebar-section {
+        margin-top: 25px;
+        margin-bottom: 55px;
+    }
+
+.sidebar-header {
+    background-color: white;
+    color: black;
+    width: 90%;
+    text-align: left;
+    padding: 7px 0;
+    margin-bottom: 10px;
+}
+
+    .sidebar-header > h3 {
+        opacity: .3;
+        margin-left: 5%;
+    }
+
+.sidebar > .sidebar-section > ul {
+    list-style: none;
+    margin-left: -40px;
+    width: 100%;
+}
+
+    .sidebar > .sidebar-section > ul > li.sidebar-item {
+        color: #FF6C4E;
+        background-color: #2B2B2B;
+        margin-bottom: 15px;
+        padding: 10px 0;
+        padding-left: 15px;
+        opacity: .7;
+    }
+
+        .sidebar > .sidebar-section > ul > li.sidebar-item:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .sidebar > .sidebar-section > ul > li.sidebar-item.sidebar-active {
+            opacity: 1;
+            width: 110%;
+        }
+
+.main-area {
+    position: relative;
+    margin-left: 30px;
+    width: 120%;
+}
+
+.section {
+    position: relative;
+    display: block;
+    background-color: #262626;
+    margin: 50px 25px;
+}
+
+.section-expanded-height {
+    height: auto;
+}
+
+.section-expanded-width {
+    width: auto;
+}
+
+.section-expanded {
+    width: auto;
+    height: auto;
+}
+
+.section.section-sm {
+    max-width: 400px;
+    min-width: auto;
+    width: 400;
+    height: 225px;
+}
+
+.section > .section-header {
+    background-color: white;
+    text-align: center;
+}
+
+    .section > .section-header > h3 {
+        color: black;
+        opacity: .3;
+    }
+
+.section > .section-body {
+    position: relative;
+    padding: 20px 10px 40px 10px;
+}
+
+#running-server-section .circle-md-dark {
+    top: 33px;
+}
+
+#running-server-section .section-body {
+    text-align: right;
+    padding-right: 50px;
+}
+
+    #running-server-section .section-body h1 {
+        left: 150px;
+        font-size: 50px;
+    }
+
+    #running-server-section .section-body p {
+        left: 150px;
+        font-size: 18px;
+        top: 120px;
+    }
+
+#server-ram-usage-section .section-body {
+    font-size: 40px;
+    text-align: right;
+}
+
+    #server-ram-usage-section .section-body p {
+        margin-right: 25px;
+        margin-left: 45px;
+        margin-top: 25px;
+        text-align: left;
+        font-size: 72px;
+    }
+
+    #server-ram-usage-section .section-body .circle-md-dark {
+        margin-top: 25px;
+    }
+
+#server-uptime-section .section-body {
+    text-align: right;
+    padding-right: 25px;
+}
+
+#server-uptime-section .circle-md-dark {
+    top: 33px;
+}
+
+#server-uptime-section .section-body p {
+    font-size: 45px;
+    margin-top: 25px;
+}
+
+#server-list-section ul {
+    list-style: none;
+}
+
+    #server-list-section ul li.server-item {
+        background-color: #1A1A1A;
+        height: 150px;
+        margin-left: -25px;
+        margin-right: 10px;
+        margin-bottom: 50px;
+    }
+
+        #server-list-section ul li.server-item p.server-name {
+            font-size: 64px;
+            margin-top: 33px;
+            padding-left: 15px;
+        }
+
+        #server-list-section ul li.server-item p.server-status {
+            right: 50px;
+            margin-top: 50px;
+            padding: 5px 15px;
+        }
+
+            #server-list-section ul li.server-item p.server-status.status-online {
+                background-color: green;
+            }
+
+            #server-list-section ul li.server-item p.server-status.status-offline {
+                background-color: red;
+            }
+
+        #server-list-section ul li.server-item p.players-online {
+            right: 200px;
+            margin-top: 15px;
+            font-size: 35px;
+        }
+
+        #server-list-section ul li.server-item p.server-port {
+            right: 200px;
+            font-size: 35px;
+        }
+
+.circle-md-dark {
+    background-color: #1A1A1A;
+    width: 100px;
+    height: 100px;
+    padding: 15px;
+    border-radius: 150px;
+    align-content: center;
+    justify-content: center;
+    color: #FF6C4E;
+    text-align: center;
+    font-size: 50px;
+    margin: 10px 25px;
+}
+
+.circle-sm-dark {
+    background-color: #1A1A1A;
+    width: 50px;
+    height: 50px;
+    padding: 10px 5px;
+    border-radius: 150px;
+    align-content: center;
+    justify-content: center;
+    color: #FF6C4E;
+    text-align: center;
+    font-size: 20px;
+}
+
+#portal {
+    height: 99vh;
+    width: 100%;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+ul.nostyle {
+    list-style: none;
+}
+
+.server-property-item {
+    display: block;
+    margin-bottom: 35px;
+}
+
+    .server-property-item .property-name {
+        font-size: 32px;
+    }
+
+    .server-property-item input.property-value {
+        margin-left: 25px;
+        margin-top: 15px;
+        width: 75%;
+        height: 33px;
+    }
+
+input {
+    color: white;
+    background-color: #1A1A1A;
+    border: 0px;
+    outline: none;
+}
+
+.server-property-item select.property-value {
+    margin-left: 25px;
+    margin-top: 15px;
+    width: 75%;
+    height: 33px;
+    color: white;
+    background-color: #1A1A1A;
+    border: 0px;
+    outline: none;
+}
+
+#max-ram-setttings-circle, #min-ram-setttings-circle {
+    margin-top: 35px;
+}
+
+.java-settings {
+    position: relative;
+}
+
+    .java-settings .option-label {
+        left: 5px;
+        font-size: 24px;
+        margin-top: 55px;
+    }
+
+input.setting-option-value {
+    text-align: right;
+    margin-top: 40px;
+    width: 100px;
+    height: 50px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0px;
+    outline: none;
+    font-size: 44px;
+}
+
+.setting-header {
+    background-color: white;
+    color: black;
+    width: 95%;
+    text-align: left;
+    padding: 7px 5px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-left: -50px;
+}
+
+    .setting-header > h3 {
+        opacity: .3;
+    }
+
+.java-setting-option {
+    margin-left: -40px;
+}
+
+    .java-setting-option input[type=text] {
+        width: 100%;
+        padding: 5px;
+        overflow: hidden;
+    }
+
+.btn-control {
+    margin: 0 25px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    background-color: #1A1A1A;
+    margin-top: 5px;
+    margin-left: 25%;
+}
+
+    .dropdown-content .dropdown-item {
+        color: white;
+        display: block;
+    }
+
+        .dropdown-content .dropdown-item:hover {
+            color: rgb(185, 185, 185);
+            background-color: #4b4a4a;
+            cursor: pointer;
+        }
+
+    .dropdown-content.show {
+        display: block;
+    }
+
+.btn {
+    border-radius: 0 !important;
+}
+
+.section-body .subsection {
+    margin-top: 25px;
+    margin-bottom: 50px;
+}
+
+#startonboot-section {
+    padding-left: 75px;
+}
+
+#console-view {
+    color: rgb(219, 219, 219);
+    height: 75vh;
+    background-color: #1A1A1A;
+    padding: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+#console-input {
+    background-color: white;
+    color: #1A1A1A;
+    width: 100%;
+}
+
+.btn-download-profile {
+    position: absolute;
+    right: 0;
+    margin-right: 75px;
+    margin-top: 50px;
+}
+
+.profile-name {
+    font-size: 33px;
+    margin-top: 40px;
+    padding-left: 15px;
+}
+
+
+.select-server-btn {
+    right: 50px;
+    margin-top: 50px;
+    padding: 5px 15px;
+}

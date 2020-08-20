@@ -1,0 +1,75 @@
+﻿@using com.drewchaseproject.net.asp.mc.OlegMC.Library.Models
+@{
+    ViewData["Title"] = "Dashboard";
+    int i = 0;
+    ServersListModel.Singleton.Servers.ForEach(e => { if (e.Active) i++; });
+    string servers_running = i + "";
+}
+<script>
+    window.onload = function () {
+        ChangeViewWithIndex(0);
+    }
+</script>
+<div class="row">
+    <div class="col-md-4">
+        <!-- Running Server Section -->
+        <div class="section section-sm" id="running-server-section">
+            <div class="section-header">
+                <h3>Running Servers</h3>
+            </div>
+            <div class="section-body">
+                <div class="row">
+                    <div class="circle-md-dark"><i class="fas fa-check"></i></div>
+                    <div class="col section-subcontent" id="running-servers-information">
+                        <div class="row">
+                            <h1>@servers_running</h1>
+                        </div>
+                        <div class="row">
+                            <p>Servers Running</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <!-- Server Uptime Section -->
+        <div class="section section-sm" id="server-uptime-section">
+            <div class="section-header">
+                <h3>Uptime</h3>
+            </div>
+            <div class="section-body">
+                <div class="row">
+                    <div class="circle-md-dark"><i class="far fa-clock"></i></div>
+                    <p>00:08:40</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="section section-sm" id="server-ram-usage-section">
+            <div class="section-header">
+                <h3>RAM Usage</h3>
+            </div>
+            <div class="section-body">
+                <div class="row">
+                    <p>3.23</p>
+                    <div class="circle-md-dark" id="ram-circle">GB</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="section section-lg section-expanded" id="server-list-section">
+    <div class="section-header">
+        <h3>Servers</h3>
+    </div>
+    <div class="section-body">
+        <ul>
+            @Html.Partial("Templates/ServerListItem", ServersListModel.Singleton)
+        </ul>
+    </div>
+</div>

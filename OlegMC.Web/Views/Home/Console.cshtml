@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Server Console";
+}
+<script>
+    window.onload = function () {
+        ChangeViewWithIndex(5);
+        @*document.getElementById("console-view").contentWindow.scrollTo(0, 999999);*@
+    }
+
+    setInterval(function () {
+        document.getElementById("console-view").scrollTop = document.getElementById("console-view").scrollHeight;
+        document.getElementById("console-view").src = "/Home/ConsoleText";
+    }, 2 * 1000);
+</script>
+<div class="section section-lg section-expanded" id="create-server-section">
+    <div class="section-header">
+        <h3>Console</h3>
+    </div>
+    <div class="section-body">
+        <iframe id="console-view" src="/Home/ConsoleText" frameborder="0" onload="document.getElementById('console-view').contentWindow.scrollTo(0, 999999)">
+            @com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Values.Singleton.SelectedServer.ServerConsole
+        </iframe>
+        <input type="text" name="console-input" id="console-input" placeholder=">" onkeypress="SendConsoleCommand(event, this);">
+    </div>
+</div>

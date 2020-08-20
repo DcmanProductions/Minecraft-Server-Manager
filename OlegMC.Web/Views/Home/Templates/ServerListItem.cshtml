@@ -1,0 +1,49 @@
+﻿@using com.drewchaseproject.net.asp.mc.OlegMC.Library.Models
+@using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
+@model ServersListModel
+@foreach (var server in Model.Servers)
+{
+    Console.WriteLine($"Loading Server {server.Name} with port {server.Port}");
+    string active = server.Active ? "ONLINE" : "OFFLINE";
+    string class_status = server.Active ? "status-online" : "status-offline";
+    <li class="server-item">
+        <div class="row">
+            <div class="col-xl-7">
+                <p class="server-name">@server.Name</p>
+            </div>
+            <div class="col-sm-auto">
+                <p class="players-online">@server.CurrentPlayers / @server.MaxPlayers</p>
+                <p class="server-port">@server.Port</p>
+            </div>
+            <div class="col-sm-auto">
+                <p class="server-status @class_status">@active</p>
+            </div>
+            <div class="col-sm-auto">
+                @{
+                    if (Values.Singleton.SelectedServer != null)
+                    {
+                        if (Values.Singleton.SelectedServer.Manifest != null)
+                        {
+                            if (Values.Singleton.SelectedServer.Name.Equals(server.Name))
+                            {
+                                <p class="btn btn-outline-light select-server-btn disabled">Selected</p>
+                            }
+                            else
+                            {
+                                <p class="btn btn-outline-light select-server-btn" onclick="location.href='/Home/Status?Name=@server.Name'">Select</p>
+                            }
+                        }
+                        else
+                        {
+                            <p class="btn btn-outline-light select-server-btn" onclick="location.href='/Home/Status?Name=@server.Name'">Select</p>
+                        }
+                    }
+                    else
+                    {
+                        <p class="btn btn-outline-light select-server-btn" onclick="location.href='/Home/Status?Name=@server.Name'">Select</p>
+                    }
+                }
+            </div>
+        </div>
+    </li>
+}

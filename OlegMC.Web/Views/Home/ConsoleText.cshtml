@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "";
+}
+<style>
+    body {
+        color: white;
+        font-family: 'Roboto', sans-serif;
+    }
+</style>
+@foreach(string s in com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Values.Singleton.SelectedServer.ServerConsole)
+{
+    <p>@s</p>
+}

@@ -1,0 +1,107 @@
+﻿@using com.drewchaseproject.net.asp.mc.OlegMC.Library.Models
+@using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
+@{
+    ViewData["Title"] = "Server Properties";
+    ServerModel server = Values.Singleton.SelectedServer;
+}
+<script>
+    window.onload = function () {
+        ChangeViewWithIndex(4);
+    }
+</script>
+<div class="section section-lg section-expanded" id="create-server-section">
+    <div class="section-header">
+        <h3>Server Properties</h3>
+    </div>
+    <div class="section-body">
+        <form action="/Home/SaveProperties" method="post" id="serverSettingsForm">
+            <ul class="nostyle">
+                @*<li class="server-property-item">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <p class="property-name">Name</p>
+                            </div>
+                            <input type="text" class="property-value" name="servername" value="@server.Name" onfocusout="SubmitForm('serverSettingsForm')">
+                        </div>
+                    </li>
+
+                    <li class="server-property-item">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <p class="property-name">Server Port</p>
+                            </div>
+                            <input type="number" class="property-value" name="serverport" value="@server.Port" onfocusout="SubmitForm('serverSettingsForm')">
+                        </div>
+                    </li>
+
+                    <li class="server-property-item">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <p class="property-name">Max Players</p>
+                            </div>
+                            <input type="number" class="property-value" name="maxplayers" value="@server.MaxPlayers" onfocusout="SubmitForm('serverSettingsForm')">
+                        </div>
+                    </li>
+
+                    <li class="server-property-item">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <p class="property-name">Level Name</p>
+                            </div>
+                            <input type="text" class="property-value" name="levelname" value="world" onfocusout="SubmitForm('serverSettingsForm')">
+                        </div>
+                    </li>
+
+                    <li class="server-property-item">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <p class="property-name">Difficulty</p>
+                            </div>
+                            <select class="property-value" name="difficulty" onfocusout="SubmitForm('serverSettingsForm')">
+                                @{
+                                    foreach (var v in Enum.GetValues(typeof(Values.Difficulty)))
+                                    {
+                                        if (Values.Singleton.SelectedServer.Difficulty.Equals(v))
+                                        {
+                                            <option value="@v.ToString()" selected="selected">@v.ToString()</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@v.ToString()">@v.ToString()</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </li>
+
+                    <li class="server-property-item">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <p class="property-name">Seed</p>
+                            </div>
+                            <input type="text" class="property-value" onfocusout="SubmitForm('serverSettingsForm')">
+                        </div>
+                    </li>*@
+
+                @{
+                    ServerPropertyList list = Values.Singleton.SelectedServer.ServerProperties;
+                    foreach (var property in list)
+                    {
+                        <li class="server-property-item">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <p class="property-name">@property.Key.Replace("-", " ")</p>
+                                </div>
+                                <input type="text" class="property-value" name="@property.Key" id="@property.Key" value="@property.Value" onfocusout="SaveProperty(this)">
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+            <div class="text-center">
+                <button type="submit" class="btn btn-outline-light">Save</button>
+            </div>
+        </form>
+    </div>
+</div>

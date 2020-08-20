@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>com.drewchaseproject.net.asp.mc.OlegMC.Library</RootNamespace>
+    <AssemblyName>OlegMCLib</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ChaseLabs.Configuration" Version="0.0.4" />
+    <PackageReference Include="ChaseLabs.Logger" Version="0.0.8" />
+  </ItemGroup>
+
+</Project>
