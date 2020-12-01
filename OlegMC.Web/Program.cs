@@ -3,6 +3,7 @@ using ChaseLabs.CLLogger.Interfaces;
 using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data;
 using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Streams;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
@@ -51,7 +52,7 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web
         foreach (string argument in args)
         {
             string text = argument.ToLower();
-            if (text.StartsWith("--help") || text.StartsWith("-h"))
+            if (text.StartsWith("help") || text.StartsWith("h"))
             {
                 log.Info(new string[]
             {
@@ -63,27 +64,28 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web
                                 "--password={password}: Password for the HTTPS Certificate",
                                 "-----END HELP-----"
     });
+                Console.ReadLine();
                 Environment.Exit(0);
             }
-            else if (text.StartsWith("--port=") || text.StartsWith("-p="))
+            else if (text.StartsWith("port=") || text.StartsWith("p="))
             {
-                if (int.TryParse(text.Replace("--port=", "").Replace("-p=", ""), out port))
+                if (int.TryParse(text.Replace("port=", "").Replace("p=", ""), out port))
                 {
                     Values.Singleton.Port = port;
                 }
                 continue;
             }
-            else if (text.StartsWith("--usehttps"))
+            else if (text.StartsWith("usehttps"))
             {
                 useHttps = true;
             }
-            else if (text.StartsWith("--filename="))
+            else if (text.StartsWith("filename="))
             {
-                filename = text.Replace("--filename=", "");
+                filename = text.Replace("filename=", "");
             }
-            else if (text.StartsWith("--password="))
+            else if (text.StartsWith("password="))
             {
-                password = text.Replace("--password=", "");
+                password = text.Replace("password=", "");
             }
         }
 

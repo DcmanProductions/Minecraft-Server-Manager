@@ -6,7 +6,16 @@
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <RootNamespace>com.drewchaseproject.net.asp.mc.OlegMC.Web</RootNamespace>
     <AssemblyName>OlegMC</AssemblyName>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\favicon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ChaseLabs.Configuration" Version="0.0.4" />
