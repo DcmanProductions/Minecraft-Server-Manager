@@ -8,9 +8,11 @@
 }
 
 <script>
-    @*window.onload = function () {
-        ChangeViewWithIndex(3);
-    }
+        $('#navigation_side_bar').load(`/Template/Sidebar`);
+        setTimeout(() => {
+            ChangeViewWithIndex(3);
+        }, 1)
+    @*
     setInterval(function () {
         location.reload();
     }, 10 * 1000);*@
@@ -78,7 +80,7 @@
 
 <div class="row">
     <div class="col-lg-8">
-        <div class="section section-lg section-expanded-height" id="server-list-section">
+        <div class="section section-lg section-expanded-height section-expanded-width" id="server-list-section">
             <div class="section-header">
                 <h3>Server Action</h3>
             </div>
@@ -136,105 +138,103 @@
                 <h3>Java Settings</h3>
             </div>
             <div class="section-body">
-                <form action="/Home/SaveJavaSettings" method="post" id="serverJavaSettingsForm">
-                    <ul class="nostyle java-settings">
-                        <li class="java-setting-option">
-                            <label for="startjar">Starting Jar</label>
-                            <select name="startjar" style="margin-left: 50px;min-width: 100px;max-width: 200px;width: 150px;" onfocusout="SubmitForm('serverJavaSettingsForm');">
-                                <option value="Placeholder">---Select Jar---</option>
-                                @foreach (string s in Values.Singleton.SelectedServer.Jars)
+                <ul class="nostyle java-settings">
+                    <li class="java-setting-option">
+                        <label for="startjar">Starting Jar</label>
+                        <select id="startjar" name="startjar" style="margin-left: 50px;min-width: 100px;max-width: 200px;width: 150px;" onfocusout="SubmitForm('serverJavaSettingsForm');">
+                            <option value="Placeholder">---Select Jar---</option>
+                            @foreach (string s in Values.Singleton.SelectedServer.Jars)
+                            {
+                                string name = new System.IO.FileInfo(s).Name;
+                                if (name.Replace(" ", "-").Replace(".jar", "").Equals(Values.Singleton.SelectedServer.StartingJar.Replace(" ", "-").Replace(".jar", "")))
                                 {
-                                    string name = new System.IO.FileInfo(s).Name;
-                                    if (name.Replace(" ", "-").Replace(".jar", "").Equals(Values.Singleton.SelectedServer.StartingJar.Replace(" ", "-").Replace(".jar", "")))
-                                    {
-                                        <option selected="selected" value="@name.Replace(" ","-").Replace(".jar", "")">@name</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@name.Replace(" ","-").Replace(".jar", "")">@name</option>
-                                    }
+                                    <option selected="selected" value="@name.Replace(" ","-").Replace(".jar", "")">@name</option>
                                 }
-                            </select>
-                        </li>
-                        <li class="java-setting-option">
-                            <div class="row">
-                                <div class="col-sm-auto">
-                                    <p class="option-label">Max Ram</p>
-                                </div>
-                                <div class="col-sm-auto">
-                                    <input type="number" name="maxram" id="max-ram-setting-value" class="setting-option-value" onfocusout="SubmitForm('serverJavaSettingsForm');" value="@(int.TryParse(Values.Singleton.SelectedServer.MaxRam.Replace("GB", "").Replace("MB", ""), out int max)?max:2)">
-                                </div>
-                                <div class="col-sm-auto">
-                                    <div class="circle-sm-dark" id="max-ram-setttings-circle" onclick="ToggleRam(this, 'maxramext'); SubmitForm('serverJavaSettingsForm');">
-                                        @{
-                                            string ext = "";
-                                            if (@Values.Singleton.SelectedServer.MaxRam.EndsWith("GB"))
-                                            {
-                                                ext = "GB";
-                                            }
-                                            else if (@Values.Singleton.SelectedServer.MaxRam.EndsWith("MB"))
-                                            {
-                                                ext = "MB";
-                                            }
-                                            else
-                                            {
-                                                ext = "GB";
-                                            }
-                                        }
-                                        @ext
-                                    </div>
-                                    <input type="text" name="maxramext" id="maxramext" value="@ext" style="display:none;" />
-                                </div>
+                                else
+                                {
+                                    <option value="@name.Replace(" ","-").Replace(".jar", "")">@name</option>
+                                }
+                            }
+                        </select>
+                    </li>
+                    <li class="java-setting-option">
+                        <div class="row">
+                            <div class="col-sm-auto">
+                                <p class="option-label">Max Ram</p>
                             </div>
-                        </li>
-                        <li class="java-setting-option">
-                            <div class="row">
-                                <div class="col-sm-auto">
-                                    <p class="option-label">Min Ram</p>
-                                </div>
-                                <div class="col-sm-auto">
-                                    <input type="number" name="minram" id="min-ram-setting-value" onfocusout="SubmitForm('serverJavaSettingsForm');" class="setting-option-value" value="@(int.TryParse(Values.Singleton.SelectedServer.MinRam.Replace("GB", "").Replace("MB", ""), out int min)?min:128)">
-                                </div>
-                                <div class="col-sm-auto">
-                                    <div class="circle-sm-dark" id="min-ram-setttings-circle" onclick="ToggleRam(this, 'minramext');SubmitForm('serverJavaSettingsForm');">
-                                        @{
-                                            string minext = "";
-                                            if (@Values.Singleton.SelectedServer.MinRam.EndsWith("GB"))
-                                            {
-                                                minext = "GB";
-                                            }
-                                            else if (@Values.Singleton.SelectedServer.MinRam.EndsWith("MB"))
-                                            {
-                                                minext = "MB";
-                                            }
-                                            else
-                                            {
-                                                minext = "MB";
-                                            }
-                                        }
-                                        @minext
-                                    </div>
-                                    <input type="text" name="minramext" id="minramext" value="@minext" style="display:none;" />
-                                </div>
+                            <div class="col-sm-auto">
+                                <input type="number" name="maxram" id="max-ram-setting-value" class="setting-option-value" onfocusout="SubmitForm('serverJavaSettingsForm');" value="@(int.TryParse(Values.Singleton.SelectedServer.MaxRam.Replace("GB", "").Replace("MB", ""), out int max)?max:2)">
                             </div>
-                        </li>
-                        <div class="setting-header">
-                            <h3>Java Arguments</h3>
+                            <div class="col-sm-auto">
+                                <div class="circle-sm-dark" id="max-ram-setttings-circle" onclick="ToggleRam(this, 'maxramext'); SubmitForm('serverJavaSettingsForm');">
+                                    @{
+                                        string ext = "";
+                                        if (@Values.Singleton.SelectedServer.MaxRam.EndsWith("GB"))
+                                        {
+                                            ext = "GB";
+                                        }
+                                        else if (@Values.Singleton.SelectedServer.MaxRam.EndsWith("MB"))
+                                        {
+                                            ext = "MB";
+                                        }
+                                        else
+                                        {
+                                            ext = "GB";
+                                        }
+                                    }
+                                    @ext
+                                </div>
+                                <input type="text" name="maxramext" id="maxramext" value="@ext" style="display:none;" />
+                            </div>
                         </div>
-                        <li class="java-setting-option">
-                            <input type="text" name="javaargs" id="java-args-setting" value="@Values.Singleton.SelectedServer.JavaArguments" onfocusout="SubmitForm('serverJavaSettingsForm');">
-                        </li>
-                        <div class="setting-header" id="">
-                            <h3>Minecraft Arguments</h3>
+                    </li>
+                    <li class="java-setting-option">
+                        <div class="row">
+                            <div class="col-sm-auto">
+                                <p class="option-label">Min Ram</p>
+                            </div>
+                            <div class="col-sm-auto">
+                                <input type="number" name="minram" id="min-ram-setting-value" onfocusout="SubmitForm('serverJavaSettingsForm');" class="setting-option-value" value="@(int.TryParse(Values.Singleton.SelectedServer.MinRam.Replace("GB", "").Replace("MB", ""), out int min)?min:128)">
+                            </div>
+                            <div class="col-sm-auto">
+                                <div class="circle-sm-dark" id="min-ram-setttings-circle" onclick="ToggleRam(this, 'minramext');SubmitForm('serverJavaSettingsForm');">
+                                    @{
+                                        string minext = "";
+                                        if (@Values.Singleton.SelectedServer.MinRam.EndsWith("GB"))
+                                        {
+                                            minext = "GB";
+                                        }
+                                        else if (@Values.Singleton.SelectedServer.MinRam.EndsWith("MB"))
+                                        {
+                                            minext = "MB";
+                                        }
+                                        else
+                                        {
+                                            minext = "MB";
+                                        }
+                                    }
+                                    @minext
+                                </div>
+                                <input type="text" name="minramext" id="minramext" value="@minext" style="display:none;" />
+                            </div>
                         </div>
-                        <li class="java-setting-option">
-                            <input type="text" name="mcargs" id="mc-args-setting" placeholder="nogui" value="@Values.Singleton.SelectedServer.MinecraftArguments" onfocusout="SubmitForm('serverJavaSettingsForm');">
-                        </li>
-                    </ul>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-outline-light">Save</button>
+                    </li>
+                    <div class="setting-header">
+                        <h3>Java Arguments</h3>
                     </div>
-                </form>
+                    <li class="java-setting-option">
+                        <input type="text" name="javaargs" id="java-args-setting" value="@Values.Singleton.SelectedServer.JavaArguments" onfocusout="SubmitForm('serverJavaSettingsForm');">
+                    </li>
+                    <div class="setting-header" id="">
+                        <h3>Minecraft Arguments</h3>
+                    </div>
+                    <li class="java-setting-option">
+                        <input type="text" name="mcargs" id="mc-args-setting" placeholder="nogui" value="@Values.Singleton.SelectedServer.MinecraftArguments" onfocusout="SubmitForm('serverJavaSettingsForm');">
+                    </li>
+                </ul>
+                <div class="text-center">
+                    <button onclick="SubmitForm('serverJavaSettingsForm');" class="btn btn-outline-light">Save</button>
+                </div>
             </div>
         </div>
     </div>

@@ -116,6 +116,8 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Models
             }
             set
             {
+                if (value == null) value = "nogui";
+                if (value == "") value = "nogui";
                 if (!value.Contains("nogui")) value += " nogui";
                 Manifest.GetConfigByKey("MinecraftArgument").Value = value;
             }

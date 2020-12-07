@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="exports\**" />
+    <Content Remove="exports\**" />
+    <EmbeddedResource Remove="exports\**" />
+    <None Remove="exports\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\favicon.ico" />
   </ItemGroup>
 

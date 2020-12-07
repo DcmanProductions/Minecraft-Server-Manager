@@ -1,6 +1,17 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
+<div id="navigation_side_bar">
+    @Html.Partial("_SideBar")
+</div>
 @{
+    ViewData["ShowSideBar"] = true;
 }
-<h1>HI</h1>
+<div class="container">
+    <main role="main" class="pb-3">
+        <div id="main-area">
+        </div>
+    </main>
+</div>
+<div id="background-tasks" style="display:none"></div>
+<script>
+    $('#main-area').load(`/Template/Dashboard`)
+</script>

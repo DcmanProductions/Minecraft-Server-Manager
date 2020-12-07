@@ -1,5 +1,6 @@
 ﻿using com.drewchaseproject.net.asp.mc.OlegMC.Library.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
@@ -170,6 +171,9 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
             Normal,
             Hard
         }
+
+        public List<int> openPorts { get; set; }
+
         public string CurrentView { get; set; }
         public int Port { get => Configuration.Singleton.settings.GetConfigByKey("Port").ParseInt(); set => Configuration.Singleton.settings.GetConfigByKey("Port").Value = value + ""; }
 

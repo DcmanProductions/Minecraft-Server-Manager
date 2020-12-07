@@ -4,6 +4,10 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+* {
+    transition: .021s
+}
+
 a {
     text-decoration: none;
     text-decoration-color: none;
@@ -51,17 +55,20 @@ a {
 }
 
     .sidebar > .sidebar-section > ul > li.sidebar-item {
+        width: 100%;
         color: #FF6C4E;
         background-color: #2B2B2B;
         margin-bottom: 15px;
         padding: 10px 0;
         padding-left: 15px;
         opacity: .7;
+        transition: 0.2s;
     }
 
         .sidebar > .sidebar-section > ul > li.sidebar-item:hover {
             opacity: 1;
             cursor: pointer;
+            width: 110%;
         }
 
         .sidebar > .sidebar-section > ul > li.sidebar-item.sidebar-active {
@@ -80,14 +87,15 @@ a {
     display: block;
     background-color: #262626;
     margin: 50px 25px;
+    width: max-content;
 }
 
 .section-expanded-height {
-    height: auto;
+    height: 100%;
 }
 
 .section-expanded-width {
-    width: auto;
+    width: 100%;
 }
 
 .section-expanded {
@@ -96,9 +104,7 @@ a {
 }
 
 .section.section-sm {
-    max-width: 400px;
-    min-width: auto;
-    width: 400;
+    width: max-content;
     height: 225px;
 }
 
@@ -114,7 +120,7 @@ a {
 
 .section > .section-body {
     position: relative;
-    padding: 20px 10px 40px 10px;
+    padding: 20px 40px 40px 40px;
 }
 
 #running-server-section .circle-md-dark {
@@ -313,11 +319,11 @@ input.setting-option-value {
 .setting-header {
     background-color: white;
     color: black;
-    width: 95%;
+    width: max-content;
     text-align: left;
     padding: 7px 5px;
     margin-bottom: 10px;
-    margin-top: 20px;
+    margin-top: 50px;
     margin-left: -50px;
 }
 

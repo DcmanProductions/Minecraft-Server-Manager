@@ -11,14 +11,14 @@
         <h3>Create New Server</h3>
     </div>
     <div class="section-body">
-        <form action="/Home/AddServer" method="post">
+        @*<form action="/Home/AddServer" method="post">*@
             <ul class="nostyle">
                 <li class="server-property-item">
                     <div class="row">
                         <div class="col-sm-2">
                             <p class="property-name">Name</p>
                         </div>
-                        <input type="text" id="ServerNameTextBox" name="servername" class="property-value" placeholder="Latest Server" required>
+                        <input type="text" id="ServerNameTextBox" name="servername" class="property-value" placeholder="Latest Server">
                     </div>
                 </li>
 
@@ -36,7 +36,7 @@
                         <div class="col-sm-2">
                             <p class="property-name">Max Players</p>
                         </div>
-                        <input type="number" class="property-value" value="20" name="maxplayers">
+                        <input type="number" class="property-value" value="20" name="maxplayers" id="maxplayers">
                     </div>
                 </li>
 
@@ -54,7 +54,7 @@
                         <div class="col-sm-2">
                             <p class="property-name">Difficulty</p>
                         </div>
-                        <select class="property-value" name="difficulty">
+                        <select class="property-value" name="difficulty" id="difficulty">
                             @foreach (var v in Enum.GetValues(typeof(com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Values.Difficulty)))
                             {
                                 <option value="@v.ToString()">@v.ToString()</option>
@@ -69,13 +69,13 @@
                         <div class="col-sm-2">
                             <p class="property-name">Seed</p>
                         </div>
-                        <input type="text" class="property-value" name="seed">
+                        <input type="text" class="property-value" name="seed" id="seed">
                     </div>
                 </li>
             </ul>
             <div>
-                <input type="submit" class="btn btn-outline-light" style="position:absolute;right: 0; bottom: 0; margin-bottom: 25px; margin-right: 45%;" value="Create" />
+                <button class="btn btn-outline-light" style="position:absolute;right: 0; bottom: 0; margin-bottom: 25px; margin-right: 45%;" onclick="addServer($('#ServerNameTextBox')[0].value,  $('#PortTextBox')[0].value,  $('#maxplayers')[0].value,  $('#LevelNameTextBox')[0].value,  $('#difficulty option:selected').text(),  $('#seed')[0].value)">Create</button>
             </div>
-        </form>
+        @*</form>*@
     </div>
 </div>

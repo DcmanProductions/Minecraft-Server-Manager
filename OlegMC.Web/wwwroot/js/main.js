@@ -1,12 +1,13 @@
 function ChangeView(calling) {
-    //var frame = document.getElementById('portal');
-    //frame.src=calling.dataset.url;
-    window.location.href = calling.dataset.url;
+    $('#main-area').load(`/Template/${calling.dataset.url}`)
     var items = document.getElementsByClassName('sidebar-item');
     for (var i = 0; i < items.length; i++) {
         items[i].classList.remove("sidebar-active");
     }
     calling.classList.add("sidebar-active");
+
+
+
 }
 
 function ChangeViewWithIndex(index) {
@@ -59,7 +60,9 @@ function loadConsole(e) {
 }
 
 function SubmitForm(id) {
-    document.getElementById(id).submit();
+    //document.getElementById(id).submit();
+    saveJavaSettings($('#max-ram-setting-value')[0].value, $('#maxramext')[0].value, $('#min-ram-setting-value')[0].value, $('#minramext')[0].value, $('#java-args-setting')[0].value, $('#mc-args-setting')[0].value, $('#startjar option:selected').text())
+
 }
 
 function SaveProperty(e) {
@@ -73,4 +76,12 @@ function SendConsoleCommand(e, input) {
         e.preventDefault();
         location.href = "/Home/SendMessage?msg=" + input.value;
     }
+}
+
+function addServer(servername, serverport, maxplayers, levelname, difficulty, seed) {
+    $('#background-tasks').load(`/Template/AddServer?servername=${servername}&serverport=${serverport}&maxplayers=${maxplayers}&levelname=${levelname}&difficulty=${difficulty}&seed=${seed}`);
+    ChangeViewWithIndex(0)
+}
+function saveJavaSettings(maxram = "", maxramext = "G", minram = "", minramext = "M", javaargs = "", mcargs = "", startjar = "") {
+    $('#background-tasks').load(`/Status/SaveJavaSettings?maxram=${maxram}&maxramext=${maxramext}&minram=${minram}&minramext=${minramext}&javaargs=${javaargs}&mcargs=${mcargs}&startjar=${startjar}`);
 }

@@ -13,8 +13,6 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web.Controllers
     public class HomeController : Controller
     {
 
-
-
         private readonly ILogger<HomeController> _logger;
         public static HomeController Singleton { get; private set; }
 
@@ -23,12 +21,13 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web.Controllers
             _logger = logger;
             Singleton = this;
         }
-
+        [Route("/")]
         public IActionResult Index()
         {
-            return RedirectToAction("Dashboard");
+            return View();
         }
 
+        [Route("/Template/Dashboard")]
         public IActionResult Dashboard()
         {
             In.ImportPreExistingServers();
@@ -41,27 +40,33 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web.Controllers
             return RedirectToAction("Status");
         }
 
+        [Route("/Template/CreateServer")]
         public IActionResult CreateServer()
         {
             return View();
         }
 
+        [Route("/Template/AddServer")]
         public IActionResult AddServer(string servername, string serverport, string maxplayers, string levelname, string difficulty, string seed)
         {
-            System.Console.WriteLine($"DIFFICULTY RETUNS {difficulty}");
-            servername = servername == "" ? "Latest Server" : servername;
-            serverport = serverport == "" ? "25565" : serverport;
-            maxplayers = maxplayers == "" ? "20" : maxplayers;
-            levelname = levelname == "" ? "world" : levelname;
+            servername = string.IsNullOrWhiteSpace(servername) ? "Latest Server" : servername;
+            serverport = string.IsNullOrWhiteSpace(serverport) ? "25565" : serverport;
+            maxplayers = string.IsNullOrWhiteSpace(maxplayers) ? "20" : maxplayers;
+            levelname = string.IsNullOrWhiteSpace(levelname) ? "world" : levelname;
             difficulty = difficulty == "" ? Difficulty.Peaceful.ToString() : difficulty;
+            System.Console.WriteLine($"{servername}, {serverport}, {maxplayers}, {levelname}, {difficulty}, {seed}");
             Out.CreateServer(servername, serverport, maxplayers, levelname, difficulty, seed);
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("Index");
+            //return null;
         }
 
+        [Route("/Template/Profiles")]
         public IActionResult Profiles()
         {
             return View();
         }
+
+        [Route("/Template/Status")]
         public IActionResult Status(string name)
         {
             try
@@ -79,6 +84,7 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web.Controllers
             return View();
         }
 
+        [Route("/Template/Status/StartServer")]
         public IActionResult StartServer()
         {
             if (Values.Singleton.SelectedServer == null || Values.Singleton.SelectedServer.Manifest == null || Values.Singleton.SelectedServer.IsEmpty)
@@ -87,6 +93,7 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web.Controllers
             return RedirectToAction("Status");
         }
 
+        [Route("/Template/Status/StartServer")]
         public IActionResult StopServer(ServerModel.StopMethod method)
         {
             if (Values.Singleton.SelectedServer == null || Values.Singleton.SelectedServer.Manifest == null || Values.Singleton.SelectedServer.IsEmpty)
@@ -96,6 +103,7 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web.Controllers
             return RedirectToAction("Status", "Home");
         }
 
+        [Route("/Template/Properties")]
         public IActionResult Properties()
         {
             if (Values.Singleton.SelectedServer == null || Values.Singleton.SelectedServer.Manifest == null || Values.Singleton.SelectedServer.IsEmpty)
@@ -103,12 +111,14 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web.Controllers
             Values.Singleton.SelectedServer.ServerProperties.Read();
             return View();
         }
+        [Route("/Template/Console")]
         public IActionResult Console()
         {
             if (Values.Singleton.SelectedServer == null || Values.Singleton.SelectedServer.Manifest == null || Values.Singleton.SelectedServer.IsEmpty)
                 return RedirectToAction("Dashboard");
             return View();
         }
+        [Route("/Template/Console/Text")]
         public IActionResult ConsoleText()
         {
             return View();
@@ -128,6 +138,7 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web.Controllers
             return RedirectToAction("Properties");
         }
 
+        [Route("/Status/SaveJavaSettings")]
         public IActionResult SaveJavaSettings(string maxram = "", string maxramext = "G", string minram = "", string minramext = "M", string javaargs = "", string mcargs = "", string startjar = "")
         {
             if (Values.Singleton.SelectedServer == null || Values.Singleton.SelectedServer.Manifest == null || Values.Singleton.SelectedServer.IsEmpty)
@@ -146,6 +157,13 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web.Controllers
                 return RedirectToAction("Dashboard");
             Values.Singleton.SelectedServer.SendCommand(msg);
             return RedirectToAction("Console");
+        }
+
+
+        [Route("/Template/Sidebar")]
+        public IActionResult _SideBar()
+        {
+            return View();
         }
 
     }

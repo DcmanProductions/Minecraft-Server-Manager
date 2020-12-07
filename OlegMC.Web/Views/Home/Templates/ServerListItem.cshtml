@@ -1,8 +1,10 @@
 ﻿@using com.drewchaseproject.net.asp.mc.OlegMC.Library.Models
 @using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
 @model ServersListModel
+
 @foreach (var server in Model.Servers)
 {
+    string onClick = $"$('#main-area').load(`/Template/Status?Name={server.Name.Replace(" ", "%20")}`);";
     Console.WriteLine($"Loading Server {server.Name} with port {server.Port}");
     string active = server.Active ? "ONLINE" : "OFFLINE";
     string class_status = server.Active ? "status-online" : "status-offline";
@@ -30,17 +32,17 @@
                             }
                             else
                             {
-                                <p class="btn btn-outline-light select-server-btn" onclick="location.href='/Home/Status?Name=@server.Name'">Select</p>
+                                <p class="btn btn-outline-light select-server-btn" onclick="@onClick">Select</p>
                             }
                         }
                         else
                         {
-                            <p class="btn btn-outline-light select-server-btn" onclick="location.href='/Home/Status?Name=@server.Name'">Select</p>
+                            <p class="btn btn-outline-light select-server-btn" onclick="@onClick">Select</p>
                         }
                     }
                     else
                     {
-                        <p class="btn btn-outline-light select-server-btn" onclick="location.href='/Home/Status?Name=@server.Name'">Select</p>
+                        <p class="btn btn-outline-light select-server-btn" onclick="@onClick">Select</p>
                     }
                 }
             </div>
