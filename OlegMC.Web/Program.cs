@@ -1,19 +1,20 @@
-using ChaseLabs.CLLogger;
-using ChaseLabs.CLLogger.Interfaces;
 using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data;
 using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Streams;
-using com.drewchaseproject.net.asp.mc.OlegMC.Library.Utilities;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 
 namespace com.drewchaseproject.net.asp.mc.OlegMC.Web
 {
+    /// <summary>
+    /// Starting Class
+    /// <br/>
+    /// Initializes the IIS/Kestral Server
+    /// </summary>
     public class Program
     {
-        private static readonly ILog log = LogManger.Init().SetLogDirectory(Path.Combine(Directory.GetCurrentDirectory(), "latest.log")).EnableDefaultConsoleLogging();
+        private static readonly ChaseLabs.CLLogger.Interfaces.ILog log = ChaseLabs.CLLogger.LogManger.Init().SetLogDirectory(Values.Singleton.LogFile);
 
         public static void Main(string[] args)
         {
@@ -28,14 +29,18 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web
 
             In.ImportPreExistingServers();
 
-            AppDomain.CurrentDomain.ProcessExit += (s, e) =>
-            {
-                Console.WriteLine("Processing Exit...");
-                NetworkUtilities.ClosePorts();
-                System.Threading.Thread.Sleep(3 * 1000);
-            };
+            //AppDomain.CurrentDomain.ProcessExit += (s, e) =>
+            //{
+            //    NetworkUtilities.Singleton.ClosePorts();
+            //    System.Threading.Thread.Sleep(3 * 1000);
+            //};
         }
 
+        /// <summary>
+        /// Alternative Host Builder, Usually means executed in IDE or via IIS
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IHostBuilder CreateAltHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
@@ -43,17 +48,21 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web
                 webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
                 webBuilder.UseIISIntegration();
                 webBuilder.UseStartup<Startup>();
-                Console.WriteLine("I AM ALT");
             });
         }
 
+        /// <summary>
+        /// Default Host Builder using Kestral
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>().UseKestrel(options =>
                 {
-                    int port = Values.Singleton.Port;
+                    int port = Configuration.Port;
                     string filename = "", password = "";
                     bool useHttps = false;
                     foreach (string argument in args)
@@ -76,7 +85,7 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web
                         {
                             if (int.TryParse(text.Replace("port=", "").Replace("p=", ""), out port))
                             {
-                                Values.Singleton.Port = port;
+                                Configuration.Port = port;
                             }
                             continue;
                         }
@@ -115,7 +124,7 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Web
                     {
                         options.ListenAnyIP(port);
                     }
-                    NetworkUtilities.PortForward(port);
+                    //NetworkUtilities.Singleton.PortForward(port);
                 });
             });
         }

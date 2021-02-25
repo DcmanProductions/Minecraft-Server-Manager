@@ -1,10 +1,6 @@
 ﻿using ChaseLabs.CLConfiguration.List;
 using com.drewchaseproject.net.asp.mc.OlegMC.Library.Models;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using static com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Values;
 
 namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Streams
 {
@@ -24,8 +20,7 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Streams
                 string mcargs = manager.GetConfigByKey("MinecraftArgument").Value;
                 bool active = manager.GetConfigByKey("Active").ParseBoolean();
                 string startjar = manager.GetConfigByKey("StartingJar").Value;
-                string installjar = manager.GetConfigByKey("InstallJar").Value;
-                ServersListModel.Singleton.Servers.Add(new ServerModel() { Manifest = manager, Name = name, Active = active, StartingJar = startjar, InstallJar = installjar, MinRam = minram, MaxRam = maxram, JavaArguments = javaargs, MinecraftArguments = mcargs });
+                ServersListModel.Singleton.Servers.Add(new ServerModel() { Manifest = manager, Name = name, Active = active, StartingJar = startjar, MinRam = minram, MaxRam = maxram, JavaArguments = javaargs, MinecraftArguments = mcargs });
             }
         }
     }

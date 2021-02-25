@@ -1,12 +1,15 @@
 ﻿using com.drewchaseproject.net.asp.mc.OlegMC.Library.Models;
+using com.drewchaseproject.net.asp.mc.OlegMC.Library.Utilities;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq;
 
 namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
 {
+
+    /// <summary>
+    /// Contains internal values to be used across the application
+    /// </summary>
     public class Values
     {
         #region Initializing the Singleton
@@ -29,6 +32,8 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
         #region Application Constants
         public static string ApplicationName => "Oleg MC";
         public static string CompanyName => "Chase Labs";
+
+        public static string DefaultJavaArguments => "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1";
 
         #endregion
 
@@ -161,6 +166,7 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
         #region Files
         public string SettingsFile => Path.Combine(ConfigDirectory, "settings.cfg");
         public string LogFile => Path.Combine(LogDirectory, "latest.log");
+        public string JavaEnvironment => CurrentOS.isWindows ? $"" : CurrentOS.isLinux ? $"" : $"";
         #endregion
 
         #region Local Variables
@@ -172,23 +178,33 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
             Hard
         }
 
-        public List<int> openPorts { get; set; }
+        private List<Open.Nat.Mapping> openPorts;
+        public List<Open.Nat.Mapping> OpenPorts
+        {
+            get => OpenPorts == null ? new List<Open.Nat.Mapping>() : openPorts;
+            private set => openPorts = value;
+        }
 
         public string CurrentView { get; set; }
-        public int Port { get => Configuration.Singleton.settings.GetConfigByKey("Port").ParseInt(); set => Configuration.Singleton.settings.GetConfigByKey("Port").Value = value + ""; }
 
-        ServerModel _selected = null;
+        private ServerModel _selected = null;
         public ServerModel SelectedServer
         {
             get
             {
-                if (_selected != null && ServersListModel.Singleton.GetServerByName(_selected.Name) == null) _selected = null;
+                if (_selected != null && ServersListModel.Singleton.GetServerByName(_selected.Name) == null)
+                {
+                    _selected = null;
+                }
+
                 return _selected;
             }
             set
             {
                 if (!value.IsEmpty)
+                {
                     _selected = value;
+                }
             }
         }
 
@@ -215,10 +231,13 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
         public static string GetDirectoryFriendlyName(string value)
         {
             char[] illegal = " `~!@#$%^&*()_+=|\\}{\"':;/?>.<,".ToCharArray();
-            foreach (var c in illegal)
+            foreach (char c in illegal)
             {
                 string s = c + "";
-                if (value.Contains(c)) value = value.Replace(s, "");
+                if (value.Contains(c))
+                {
+                    value = value.Replace(s, "");
+                }
             }
             return value;
         }

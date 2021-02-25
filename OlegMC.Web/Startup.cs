@@ -9,6 +9,11 @@ using Microsoft.Extensions.Hosting;
 
 namespace com.drewchaseproject.net.asp.mc.OlegMC.Web
 {
+    /// <summary>
+    /// Executed from Program Class
+    /// <br/>
+    /// Initializes the Application
+    /// </summary>
     public class Startup
     {
         public Startup(IConfiguration configuration)
