@@ -1,3 +1,7 @@
+:root {
+    --primary-color: rgb(220, 80, 0);
+}
+
 body {
     background-color: #1D212B;
     color: white;
@@ -7,6 +11,18 @@ body {
 * {
     transition: .021s
 }
+
+.noselect {
+    user-select: none;
+}
+
+.btn, .selectable {
+    cursor: pointer;
+}
+
+    .btn.disabled, .selectable.disabled {
+        cursor: default;
+    }
 
 a {
     text-decoration: none;
@@ -76,36 +92,45 @@ a {
             width: 110%;
         }
 
-.main-area {
+#main-area {
     position: relative;
-    margin-left: 30px;
-    width: 120%;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 35px;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    border: 0px solid green;
+    padding: 10px;
 }
 
 .section {
-    position: relative;
-    display: block;
+    /*    position: relative;*/
+    /*    display: block;*/
     background-color: #262626;
-    margin: 50px 25px;
-    width: max-content;
+    /*    margin: 50px 25px;*/
+    /*    width: max-content;*/
 }
 
 .section-expanded-height {
-    height: 100%;
+    /*    height: 100%;*/
 }
 
 .section-expanded-width {
-    width: 100%;
+    /*    width: 100%;*/
 }
 
 .section-expanded {
-    width: auto;
-    height: auto;
+    /*    width: auto;
+    height: auto;*/
 }
 
 .section.section-sm {
-    width: max-content;
-    height: 225px;
+    /*    width: max-content;*/
+    /*    height: 225px;*/
 }
 
 .section > .section-header {
@@ -225,7 +250,7 @@ a {
     border-radius: 150px;
     align-content: center;
     justify-content: center;
-    color: #FF6C4E;
+    color: var(--primary-color);
     text-align: center;
     font-size: 50px;
     margin: 10px 25px;
@@ -239,7 +264,7 @@ a {
     border-radius: 150px;
     align-content: center;
     justify-content: center;
-    color: #FF6C4E;
+    color: var(--primary-color);
     text-align: center;
     font-size: 20px;
 }
@@ -291,8 +316,19 @@ input {
 }
 
 #max-ram-setttings-circle, #min-ram-setttings-circle {
+    transition: 0.2s;
     margin-top: 35px;
 }
+
+#upload-jar-setttings-circle {
+    transition: 0.2s;
+    margin-top: -10px;
+}
+
+    #upload-jar-setttings-circle:hover, #max-ram-setttings-circle:hover, #min-ram-setttings-circle:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+    }
 
 .java-settings {
     position: relative;
@@ -303,6 +339,18 @@ input {
         font-size: 24px;
         margin-top: 55px;
     }
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
 
 input.setting-option-value {
     text-align: right;
@@ -388,21 +436,6 @@ input.setting-option-value {
     padding-left: 75px;
 }
 
-#console-view {
-    color: rgb(219, 219, 219);
-    height: 75vh;
-    background-color: #1A1A1A;
-    padding: 15px;
-    margin-bottom: 15px;
-    width: 100%;
-}
-
-#console-input {
-    background-color: white;
-    color: #1A1A1A;
-    width: 100%;
-}
-
 .btn-download-profile {
     position: absolute;
     right: 0;
@@ -421,4 +454,20 @@ input.setting-option-value {
     right: 50px;
     margin-top: 50px;
     padding: 5px 15px;
+}
+
+
+#console-view {
+    overflow: scroll;
+    width: 100%;
+    height: 65vh;
+    background-color: #191919;
+    color: white;
+    padding-left: 25px;
+}
+
+#console-input {
+    background-color: transparent;
+    width: 100%;
+    padding-left: 15px;
 }
