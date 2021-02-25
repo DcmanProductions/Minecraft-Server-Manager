@@ -1,27 +1,101 @@
 ﻿@using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
-<div class="sidebar">
-    <div class="sidebar-section">
-        <div class="sidebar-header">
-            <h3>General</h3>
-        </div>
-        <ul>
 
-            <li class="sidebar-item sidebar-active" data-url="Dashboard" onclick="ChangeView(this);"> Dashboard</li>
-            <li class="sidebar-item" data-url="CreateServer" onclick="ChangeView(this);">Create Server</li>
-            <li class="sidebar-item" data-url="Profiles" onclick="ChangeView(this);">Profiles</li>
-        </ul>
+<link rel="stylesheet" href="~/css/Navigation.css">
+<div id="nav" class="col navigation-collapsed">
+    <div class="row">
+        <div class="menuItem" onclick="ToggleNavigation()">
+            <div class="ItemTitle">
+                OlegMC
+            </div>
+            <div class="ItemIcon">
+                <i class="fas fa-align-justify"></i>
+            </div>
+        </div>
     </div>
+    <div class="row">
+        <div class="menuItem active" onclick="LoadView('dashboard', this)">
+            <div class="ItemTitle">
+                Dashboard
+            </div>
+            <div class="ItemIcon">
+                <i class="fas fa-tachometer-alt"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="menuItem " onclick="LoadView('create', this)">
+            <div class="ItemTitle">
+                Create Server
+            </div>
+            <div class="ItemIcon">
+                <i class="fas fa-plus-square"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="menuItem " onclick="LoadView('profiles', this)">
+            <div class="ItemTitle">
+                Profiles
+            </div>
+            <div class="ItemIcon">
+                <i class="fas fa-th-list"></i>
+            </div>
+        </div>
+    </div>
+
     @if (Values.Singleton.SelectedServer != null)
     {
-        <div class="sidebar-section">
-            <div class="sidebar-header">
-                <h3>@Values.Singleton.SelectedServer.Name</h3>
+        <div class="seperator" style="margin: 35px 0px 10px 0px">
+
+        </div>
+        <div class="row">
+            <div class="menuItem " onclick="LoadView('status', this)">
+                <div class="ItemTitle">
+                    Status
+                </div>
+                <div class="ItemIcon">
+                    <i class="fas fa-server"></i>
+                </div>
             </div>
-            <ul>
-                <li class="sidebar-item" data-url="Status" onclick="ChangeView(this);">Status</li>
-                <li class="sidebar-item" data-url="Properties" onclick="ChangeView(this);">Properties</li>
-                <li class="sidebar-item" data-url="Console" onclick="ChangeView(this);">Console</li>
-            </ul>
+        </div>
+
+        <div class="row">
+            <div class="menuItem " onclick="LoadView('properties', this)">
+                <div class="ItemTitle">
+                    Properties
+                </div>
+                <div class="ItemIcon">
+                    <i class="far fa-file-alt"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="menuItem " onclick="LoadView('console', this)">
+                <div class="ItemTitle">
+                    Console
+                </div>
+                <div class="ItemIcon">
+                    <i class="fas fa-terminal"></i>
+                </div>
+            </div>
         </div>
     }
+
+
+
+    <div class="row" style="position: absolute; bottom: 5px; width: 100%;">
+        <div class="menuItem" onclick="LoadView('settings', this)">
+            <div class="ItemTitle">
+                Settings
+            </div>
+            <div class="ItemIcon">
+                <i class="fas fa-cog"></i>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="~/js/Navigation.js"></script>

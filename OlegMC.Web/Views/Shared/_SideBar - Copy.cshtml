@@ -1,0 +1,27 @@
+﻿@using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
+<div class="sidebar">
+    <div class="sidebar-section">
+        <div class="sidebar-header">
+            <h3>General</h3>
+        </div>
+        <ul>
+
+            <li class="sidebar-item sidebar-active" data-url="Dashboard" onclick="ChangeView(this);"> Dashboard</li>
+            <li class="sidebar-item" data-url="CreateServer" onclick="ChangeView(this);">Create Server</li>
+            <li class="sidebar-item" data-url="Profiles" onclick="ChangeView(this);">Profiles</li>
+        </ul>
+    </div>
+    @if (Values.Singleton.SelectedServer != null)
+    {
+        <div class="sidebar-section">
+            <div class="sidebar-header">
+                <h3>@Values.Singleton.SelectedServer.Name</h3>
+            </div>
+            <ul>
+                <li class="sidebar-item" data-url="Status" onclick="ChangeView(this);">Status</li>
+                <li class="sidebar-item" data-url="Properties" onclick="ChangeView(this);">Properties</li>
+                <li class="sidebar-item" data-url="Console" onclick="ChangeView(this);">Console</li>
+            </ul>
+        </div>
+    }
+</div>

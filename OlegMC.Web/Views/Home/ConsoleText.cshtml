@@ -7,7 +7,14 @@
         font-family: 'Roboto', sans-serif;
     }
 </style>
-@foreach(string s in com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Values.Singleton.SelectedServer.ServerConsole)
+@try
 {
-    <p>@s</p>
+    foreach (string s in com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Values.Singleton.SelectedServer.ServerConsole)
+    {
+        <p>@s</p>
+    }
+}
+catch
+{
+    com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Values.Singleton.SelectedServer.ServerConsole.Clear();
 }

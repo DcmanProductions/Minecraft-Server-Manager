@@ -5,13 +5,13 @@
 @{
     ViewData["ShowSideBar"] = true;
 }
-<div class="container">
-    <main role="main" class="pb-3">
-        <div id="main-area">
+<div class="container noselect">
+    <main role="main" class="pb-3" style="position: absolute; width:98%;left:0px">
+        <div id="main-area" class="center">
         </div>
     </main>
 </div>
 <div id="background-tasks" style="display:none"></div>
 <script>
-    $('#main-area').load(`/Template/Dashboard`)
+    $('#main-area').load(`/Template/dashboard`)
 </script>

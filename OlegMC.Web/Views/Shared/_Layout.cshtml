@@ -7,18 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title> @com.drewchaseproject.net.asp.mc.OlegMC.Library.Data.Values.ApplicationName</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    @*<link rel="stylesheet" href="~/css/site.css" />*@
     <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/css/Scrollbar.css" />
 </head>
 <body>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @RenderBody()
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/main.js" asp-append-version="true"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js" integrity="sha384-3Nqiqht3ZZEO8FKj7GR1upiI385J92VwWNLj+FqHxtLYxd9l+WYpeqSOrLh0T12c" crossorigin="anonymous"></script>
 
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

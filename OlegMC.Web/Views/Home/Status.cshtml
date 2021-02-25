@@ -7,234 +7,271 @@
     string start_class = Values.Singleton.SelectedServer.Active ? "disabled" : "";
 }
 
+<style>
+    .grid-container {
+        margin-top: 35px;
+        width: max-content;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 0.5fr 1.5fr;
+        gap: 35px 30px;
+        grid-template-areas: "Status Uptime Usage" "ServerActions ServerActions Javasettings" "ServerActions ServerActions Javasettings";
+    }
+
+    .Javasettings {
+        grid-area: Javasettings;
+    }
+
+    .ServerActions {
+        grid-area: ServerActions;
+    }
+
+    .Status {
+        grid-area: Status;
+    }
+
+    .Uptime {
+        grid-area: Uptime;
+    }
+
+    .Usage {
+        grid-area: Usage;
+    }
+</style>
 <script>
+    Reload();
+    function Reload() {
         $('#navigation_side_bar').load(`/Template/Sidebar`);
         setTimeout(() => {
-            ChangeViewWithIndex(3);
-        }, 1)
-    @*
-    setInterval(function () {
-        location.reload();
-    }, 10 * 1000);*@
+            SetActiveMenuItem(3);
+        }, 150)
+    }
 </script>
-<div class="row">
-    <div class="col-md-4">
-        <!-- Running Server Section -->
-        <div class="section section-sm" id="running-server-section">
-            <div class="section-header">
-                <h3>Status</h3>
-            </div>
-            <div class="section-body">
-                <div class="row">
-                    <div class="circle-md-dark">
-                        @if (Values.Singleton.SelectedServer.Active)
-                        {
-                            <i class="fas fa-check"></i>
-                        }
-                        else
-                        {
-                            <i class="far fa-times-circle"></i>
-                        }
+
+<div class="grid-container">
+    <div class="Status section section-sm" id="running-server-section">
+        <div class="section-header">
+            <h3>Status</h3>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <div class="circle-md-dark">
+                    @if (Values.Singleton.SelectedServer.Active)
+                    {
+                        <i class="fas fa-check"></i>
+                    }
+                    else
+                    {
+                        <i class="far fa-times-circle"></i>
+                    }
+                </div>
+                <div class="col section-subcontent" id="running-servers-information">
+                    <div class="row">
+                        <h1>@status</h1>
                     </div>
-                    <div class="col section-subcontent" id="running-servers-information">
-                        <div class="row">
-                            <h1>@status</h1>
-                        </div>
-                        <div class="row">
-                            <p>Server's @status</p>
-                        </div>
+                    <div class="row">
+                        <p>Server's @status</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <!-- Server Uptime Section -->
-        <div class="section section-sm" id="server-uptime-section">
-            <div class="section-header">
-                <h3>Uptime</h3>
-            </div>
-            <div class="section-body">
-                <div class="row">
-                    <div class="circle-md-dark"><i class="far fa-clock"></i></div>
-                    <p>01:28:25</p>
-                </div>
+    <div class="Uptime section section-sm" id="server-uptime-section">
+        <div class="section-header">
+            <h3>Uptime</h3>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <div class="circle-md-dark"><i class="far fa-clock"></i></div>
+                <p>01:28:25</p>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="section section-sm" id="server-ram-usage-section">
-            <div class="section-header">
-                <h3>RAM Usage</h3>
-            </div>
-            <div class="section-body">
-                <div class="row">
-                    <p>@Values.Singleton.SelectedServer.CurrentRamUsage</p>
-                    <div class="circle-md-dark" id="ram-circle">MB</div>
-                </div>
+    <div class="Usage section section-sm" id="server-ram-usage-section">
+        <div class="section-header">
+            <h3>RAM Usage</h3>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <p>@Values.Singleton.SelectedServer.CurrentRamUsage</p>
+                <div class="circle-md-dark" id="ram-circle">MB</div>
             </div>
         </div>
     </div>
-</div>
+    <div class="ServerActions section section-lg section-expanded-height section-expanded-width" id="server-list-section">
+        <div class="section-header">
+            <h3>Server Action</h3>
+        </div>
+        <div class="section-body">
+            <div class="row subsection">
+                <div class="col-xl-8">
+                    @if (Values.Singleton.SelectedServer.AcceptedEULA && Values.Singleton.SelectedServer.StartingJar != "")
+                    {
+                        <button class="btn btn-success btn-control @start_class " onclick="$('#background-tasks').load('@Url.Action("StartServer", "Home")'); LoadView(3);">START</button>
+                    }
+                    else
+                    {
+                        <p class="btn btn-success btn-control @start_class disabled ">START</p>
+                    }
 
-
-<div class="row">
-    <div class="col-lg-8">
-        <div class="section section-lg section-expanded-height section-expanded-width" id="server-list-section">
-            <div class="section-header">
-                <h3>Server Action</h3>
-            </div>
-            <div class="section-body">
-                <div class="row subsection">
-                    <div class="col-xl-8">
-                        @if (Values.Singleton.SelectedServer.AcceptedEULA && Values.Singleton.SelectedServer.StartingJar != "")
-                        {
-                            <button class="btn btn-success btn-control @start_class " onclick="location.href='/Home/StartServer'">START</button>
-                        }
-                        else
-                        {
-                            <p class="btn btn-success btn-control @start_class disabled ">START</p>
-                        }
-
-                        @if (Values.Singleton.SelectedServer.Active)
-                        {
-                            <div class="dropdown">
-                                <button class="btn btn-danger btn-control dropbtn" onclick="dropdown('stop-alt-actions');">STOP</button>
-                                <div id="stop-alt-actions" class="dropdown-content">
-                                    <div class="dropdown-item" onclick="location.href='@Url.Action("StopServer", "Home", ServerModel.StopMethod.Standard)'">STOP</div>
-                                    <div class="dropdown-item" onclick="location.href='@Url.Action("StopServer", "Home", ServerModel.StopMethod.Kill)'">KILL</div>
-                                    <div class="dropdown-item" onclick="location.href='@Url.Action("StopServer", "Home", ServerModel.StopMethod.Restart)'">RESTART</div>
-                                </div>
+                    @if (Values.Singleton.SelectedServer.Active)
+                    {
+                        <div class="dropdown">
+                            <button class="btn btn-danger btn-control dropbtn" onclick="dropdown('stop-alt-actions');">STOP</button>
+                            <div id="stop-alt-actions" class="dropdown-content">
+                                <div class="dropdown-item" onclick="$('#background-tasks').load('@Url.Action("StopServer", "Home", ServerModel.StopMethod.Standard)'); LoadView(3);">STOP</div>
+                                <div class="dropdown-item" onclick="$('#background-tasks').load('@Url.Action("StopServer", "Home", ServerModel.StopMethod.Kill)'); LoadView(3);">KILL</div>
+                                <div class="dropdown-item" onclick="$('#background-tasks').load('@Url.Action("StopServer", "Home", ServerModel.StopMethod.Restart)'); LoadView(3);">RESTART</div>
                             </div>
-                        }
-                        else
-                        {
-                            <p class="btn btn-danger btn-control disabled">STOP</p>
-                        }
-                    </div>
-                    <div class="col-sm">
-                        @if (Values.Singleton.SelectedServer.AcceptedEULA)
-                        {
-                            <p class="btn btn-light disabled">EULA ACCEPTED</p>
-                        }
-                        else
-                        {
-                            <button class="btn btn-outline-light" onclick="location.href='@Url.Action("AcceptEULA")'">ACCEPT EULA</button>
-                        }
-                    </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="btn btn-danger btn-control disabled">STOP</p>
+                    }
                 </div>
-                <div class="row subsection">
-                    <div class="custom-control custom-checkbox" id="startonboot-section">
-                        <input type="checkbox" class="custom-control-input" id="startonboot">
-                        <label class="custom-control-label" for="startonboot">Start On BOOT</label>
-                    </div>
+                <div class="col-sm">
+                    @if (Values.Singleton.SelectedServer.AcceptedEULA)
+                    {
+                        <p class="btn btn-light disabled">EULA ACCEPTED</p>
+                    }
+                    else
+                    {
+                        <button class="btn btn-outline-light" onclick="$('#background-tasks').load('@Url.Action("AcceptEULA")'); LoadView(3);">ACCEPT EULA</button>
+                    }
+                    @if (Values.Singleton.SelectedServer.StartingJar.StartsWith("forge") && Values.Singleton.SelectedServer.StartingJar.EndsWith("installer.jar"))
+                    {
+                        <button class="btn btn-dark" onclick="$('#background-tasks').load('/InstallForge'); LoadView(5);setTimeout(() => {$('#background-tasks')[0].innerHTML = '';}, 5000)">
+                            Install Forge
+                        </button>
+                    }
+                </div>
+
+            </div>
+            <div class="row subsection">
+                <div class="custom-control custom-checkbox" id="startonboot-section">
+                    <input type="checkbox" class="custom-control-input" id="startonboot">
+                    <label class="custom-control-label" for="startonboot">Start On BOOT</label>
+                    <button class="btn btn-danger btn-control" onclick="deleteServer(); ">DELETE SERVER</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="section section-expanded-height" id="server-java-settings-section">
-            <div class="section-header">
-                <h3>Java Settings</h3>
-            </div>
-            <div class="section-body">
-                <ul class="nostyle java-settings">
-                    <li class="java-setting-option">
-                        <label for="startjar">Starting Jar</label>
-                        <select id="startjar" name="startjar" style="margin-left: 50px;min-width: 100px;max-width: 200px;width: 150px;" onfocusout="SubmitForm('serverJavaSettingsForm');">
-                            <option value="Placeholder">---Select Jar---</option>
-                            @foreach (string s in Values.Singleton.SelectedServer.Jars)
-                            {
-                                string name = new System.IO.FileInfo(s).Name;
-                                if (name.Replace(" ", "-").Replace(".jar", "").Equals(Values.Singleton.SelectedServer.StartingJar.Replace(" ", "-").Replace(".jar", "")))
+    <div class="Javasettings section section-expanded-height" id="server-java-settings-section">
+        <div class="section-header">
+            <h3>Java Settings</h3>
+        </div>
+        <div class="section-body">
+            <ul class="nostyle java-settings">
+                <li class="java-setting-option">
+                    <div class="row">
+                        <div class="col-sm-auto">
+                            <label for="startjar">Starting Jar</label>
+                        </div>
+                        <div class="col-sm-auto">
+                            <select id="startjar" name="startjar" style="margin-left: 20px;min-width: 100px;max-width: 200px;width: 150px;">
+                                <option value="Placeholder">---Select Jar---</option>
+                                @foreach (string s in Values.Singleton.SelectedServer.Jars)
                                 {
-                                    <option selected="selected" value="@name.Replace(" ","-").Replace(".jar", "")">@name</option>
-                                }
-                                else
-                                {
-                                    <option value="@name.Replace(" ","-").Replace(".jar", "")">@name</option>
-                                }
-                            }
-                        </select>
-                    </li>
-                    <li class="java-setting-option">
-                        <div class="row">
-                            <div class="col-sm-auto">
-                                <p class="option-label">Max Ram</p>
-                            </div>
-                            <div class="col-sm-auto">
-                                <input type="number" name="maxram" id="max-ram-setting-value" class="setting-option-value" onfocusout="SubmitForm('serverJavaSettingsForm');" value="@(int.TryParse(Values.Singleton.SelectedServer.MaxRam.Replace("GB", "").Replace("MB", ""), out int max)?max:2)">
-                            </div>
-                            <div class="col-sm-auto">
-                                <div class="circle-sm-dark" id="max-ram-setttings-circle" onclick="ToggleRam(this, 'maxramext'); SubmitForm('serverJavaSettingsForm');">
-                                    @{
-                                        string ext = "";
-                                        if (@Values.Singleton.SelectedServer.MaxRam.EndsWith("GB"))
-                                        {
-                                            ext = "GB";
-                                        }
-                                        else if (@Values.Singleton.SelectedServer.MaxRam.EndsWith("MB"))
-                                        {
-                                            ext = "MB";
-                                        }
-                                        else
-                                        {
-                                            ext = "GB";
-                                        }
+                                    string name = new System.IO.FileInfo(s).Name;
+                                    if (name.Replace(" ", "-").Replace(".jar", "").Equals(Values.Singleton.SelectedServer.StartingJar.Replace(" ", "-").Replace(".jar", "")))
+                                    {
+                                        <option selected="selected" value="@name.Replace(" ","-").Replace(".jar", "")">@name</option>
                                     }
-                                    @ext
-                                </div>
-                                <input type="text" name="maxramext" id="maxramext" value="@ext" style="display:none;" />
-                            </div>
-                        </div>
-                    </li>
-                    <li class="java-setting-option">
-                        <div class="row">
-                            <div class="col-sm-auto">
-                                <p class="option-label">Min Ram</p>
-                            </div>
-                            <div class="col-sm-auto">
-                                <input type="number" name="minram" id="min-ram-setting-value" onfocusout="SubmitForm('serverJavaSettingsForm');" class="setting-option-value" value="@(int.TryParse(Values.Singleton.SelectedServer.MinRam.Replace("GB", "").Replace("MB", ""), out int min)?min:128)">
-                            </div>
-                            <div class="col-sm-auto">
-                                <div class="circle-sm-dark" id="min-ram-setttings-circle" onclick="ToggleRam(this, 'minramext');SubmitForm('serverJavaSettingsForm');">
-                                    @{
-                                        string minext = "";
-                                        if (@Values.Singleton.SelectedServer.MinRam.EndsWith("GB"))
-                                        {
-                                            minext = "GB";
-                                        }
-                                        else if (@Values.Singleton.SelectedServer.MinRam.EndsWith("MB"))
-                                        {
-                                            minext = "MB";
-                                        }
-                                        else
-                                        {
-                                            minext = "MB";
-                                        }
+                                    else
+                                    {
+                                        <option value="@name.Replace(" ","-").Replace(".jar", "")">@name</option>
                                     }
-                                    @minext
-                                </div>
-                                <input type="text" name="minramext" id="minramext" value="@minext" style="display:none;" />
-                            </div>
+                                }
+                            </select>
                         </div>
-                    </li>
-                    <div class="setting-header">
-                        <h3>Java Arguments</h3>
+                        <div class="col-sm-auto">
+                            <div class="circle-sm-dark" id="upload-jar-setttings-circle" onclick="document.getElementById('upload-jar-file').click();">
+                                <i class="fas fa-file-upload"></i>
+                            </div>
+                            <form method="post" enctype="multipart/form-data">
+                                <input type="file" style="display:none" name="upload-jar-file" id="upload-jar-file" accept=".jar" onchange="UploadJarFile();" />
+                            </form>
+                        </div>
                     </div>
-                    <li class="java-setting-option">
-                        <input type="text" name="javaargs" id="java-args-setting" value="@Values.Singleton.SelectedServer.JavaArguments" onfocusout="SubmitForm('serverJavaSettingsForm');">
-                    </li>
-                    <div class="setting-header" id="">
-                        <h3>Minecraft Arguments</h3>
+                </li>
+                <li class="java-setting-option">
+                    <div class="row">
+                        <div class="col-sm-auto">
+                            <p class="option-label">Max Ram</p>
+                        </div>
+                        <div class="col-sm-auto">
+                            <input type="number" name="maxram" id="max-ram-setting-value" class="setting-option-value" value="@(int.TryParse(Values.Singleton.SelectedServer.MaxRam.Replace("GB", "").Replace("MB", ""), out int max)?max:2)">
+                        </div>
+                        <div class="col-sm-auto">
+                            <div class="circle-sm-dark" id="max-ram-setttings-circle" onclick="ToggleRam(this, 'maxramext');">
+                                @{
+                                    string ext = "";
+                                    if (@Values.Singleton.SelectedServer.MaxRam.EndsWith("GB"))
+                                    {
+                                        ext = "GB";
+                                    }
+                                    else if (@Values.Singleton.SelectedServer.MaxRam.EndsWith("MB"))
+                                    {
+                                        ext = "MB";
+                                    }
+                                    else
+                                    {
+                                        ext = "GB";
+                                    }
+                                }
+                                @ext
+                            </div>
+                            <input type="text" name="maxramext" id="maxramext" value="@ext" style="display:none;" />
+                        </div>
                     </div>
-                    <li class="java-setting-option">
-                        <input type="text" name="mcargs" id="mc-args-setting" placeholder="nogui" value="@Values.Singleton.SelectedServer.MinecraftArguments" onfocusout="SubmitForm('serverJavaSettingsForm');">
-                    </li>
-                </ul>
-                <div class="text-center">
-                    <button onclick="SubmitForm('serverJavaSettingsForm');" class="btn btn-outline-light">Save</button>
+                </li>
+                <li class="java-setting-option">
+                    <div class="row">
+                        <div class="col-sm-auto">
+                            <p class="option-label">Min Ram</p>
+                        </div>
+                        <div class="col-sm-auto">
+                            <input type="number" name="minram" id="min-ram-setting-value" class="setting-option-value" value="@(int.TryParse(Values.Singleton.SelectedServer.MinRam.Replace("GB", "").Replace("MB", ""), out int min)?min:128)">
+                        </div>
+                        <div class="col-sm-auto">
+                            <div class="circle-sm-dark" id="min-ram-setttings-circle" onclick="ToggleRam(this, 'minramext');">
+                                @{
+                                    string minext = "";
+                                    if (@Values.Singleton.SelectedServer.MinRam.EndsWith("GB"))
+                                    {
+                                        minext = "GB";
+                                    }
+                                    else if (@Values.Singleton.SelectedServer.MinRam.EndsWith("MB"))
+                                    {
+                                        minext = "MB";
+                                    }
+                                    else
+                                    {
+                                        minext = "MB";
+                                    }
+                                }
+                                @minext
+                            </div>
+                            <input type="text" name="minramext" id="minramext" value="@minext" style="display:none;" />
+                        </div>
+                    </div>
+                </li>
+                <div class="setting-header">
+                    <h3>Java Arguments</h3>
                 </div>
+                <li class="java-setting-option">
+                    <input type="text" name="javaargs" id="java-args-setting" value="@Values.Singleton.SelectedServer.JavaArguments.Replace(Values.DefaultJavaArguments, "")" placeholder="@Values.DefaultJavaArguments">
+                </li>
+                <div class="setting-header" id="">
+                    <h3>Minecraft Arguments</h3>
+                </div>
+                <li class="java-setting-option">
+                    <input type="text" name="mcargs" id="mc-args-setting" placeholder="nogui" value="@Values.Singleton.SelectedServer.MinecraftArguments.Replace("nogui", "")">
+                </li>
+            </ul>
+            <div class="text-center">
+                <button onclick="SubmitForm();" class="btn btn-outline-light">Save</button>
             </div>
         </div>
     </div>

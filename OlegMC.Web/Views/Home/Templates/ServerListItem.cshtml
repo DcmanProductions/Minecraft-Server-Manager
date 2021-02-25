@@ -1,11 +1,15 @@
 ﻿@using com.drewchaseproject.net.asp.mc.OlegMC.Library.Models
 @using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data
 @model ServersListModel
+@{
+
+    ChaseLabs.CLLogger.Interfaces.ILog log = ChaseLabs.CLLogger.LogManger.Init().SetLogDirectory(Values.Singleton.LogFile);
+}
 
 @foreach (var server in Model.Servers)
 {
     string onClick = $"$('#main-area').load(`/Template/Status?Name={server.Name.Replace(" ", "%20")}`);";
-    Console.WriteLine($"Loading Server {server.Name} with port {server.Port}");
+    log.Info($"Loading Server {server.Name} with port {server.Port}");
     string active = server.Active ? "ONLINE" : "OFFLINE";
     string class_status = server.Active ? "status-online" : "status-offline";
     <li class="server-item">

@@ -1,26 +1,42 @@
 ﻿@{
     ViewData["Title"] = "Server Console";
 }
-<script>
-    window.onload = function () {
-        setInterval(() =>
-        {
-            $('#console-input').load("/Template/Status/Console/Text")
-        }, 1000);
-        @*ChangeViewWithIndex(5);*@
-        @*document.getElementById("console-view").contentWindow.scrollTo(0, 999999);*@
-    }
-
-    @*setInterval(function () {
-        document.getElementById("console-view").scrollTop = document.getElementById("console-view").scrollHeight;
-        document.getElementById("console-view").src = "/Home/ConsoleText";
-    }, 2 * 1000);*@
-</script>
 <div class="section section-lg section-expanded" id="create-server-section">
     <div class="section-header">
         <h3>Console</h3>
     </div>
     <div class="section-body">
-        <input type="text" name="console-input" id="console-input" placeholder=">" onkeypress="SendConsoleCommand(event, this);">
+        <div class="row">
+            <div id="console-view"></div>
+        </div>
+
+        <div class="row">
+            <div class="col" style="
+        display: inherit;
+        height: 25px;
+        width: 100%;
+        background-color: #191919;
+        color: white;
+        outline: 1px solid #282828;
+        ">
+                <p>></p>
+                <input type="text" name="console-input" id="console-input" placeholder="/help" onkeypress="SendConsoleCommand(event, this);">
+            </div>
+        </div>
+
     </div>
 </div>
+
+<script>
+    $('#console-view').load("/Template/Console/Text");
+    $('#console-view')[0].scrollTop = $('#console-view')[0].scrollHeight;
+    var timer = setInterval(() => {
+        try {
+
+            $('#console-view').load("/Template/Console/Text")
+            $('#console-view')[0].scrollTop = $('#console-view')[0].scrollHeight;
+        } catch{
+            clearInterval(timer);
+        }
+    }, 500);
+</script>

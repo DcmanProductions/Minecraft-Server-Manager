@@ -5,71 +5,84 @@
     ServersListModel.Singleton.Servers.ForEach(e => { if (e.Active) i++; });
     string servers_running = i + "";
 }
-<script>
-    window.onload = function () {
-        ChangeViewWithIndex(0);
+
+<style>
+    .grid-container {
+        margin-top: 35px;
+        width: max-content;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 0.5fr 1.5fr;
+        gap: 30px 30px;
+        grid-template-areas: "RunningServers Uptime Usage" "Servers Servers Servers";
     }
-</script>
-<div class="row">
-    <div class="col-md-4">
-        <!-- Running Server Section -->
-        <div class="section section-sm" id="running-server-section">
-            <div class="section-header">
-                <h3>Running Servers</h3>
-            </div>
-            <div class="section-body">
-                <div class="row">
-                    <div class="circle-md-dark"><i class="fas fa-check"></i></div>
-                    <div class="col section-subcontent" id="running-servers-information">
-                        <div class="row">
-                            <h1>@servers_running</h1>
-                        </div>
-                        <div class="row">
-                            <p>Servers Running</p>
-                        </div>
+
+    .Servers {
+        grid-area: Servers;
+    }
+
+    .RunningServers {
+        grid-area: RunningServers;
+    }
+
+    .Uptime {
+        grid-area: Uptime;
+    }
+
+    .Usage {
+        grid-area: Usage;
+    }
+</style>
+<div class="grid-container">
+    <div class="RunningServers section section-sm" id="running-server-section">
+        <div class="section-header">
+            <h3>Running Servers</h3>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <div class="circle-md-dark"><i class="fas fa-check"></i></div>
+                <div class="col section-subcontent" id="running-servers-information">
+                    <div class="row">
+                        <h1>@servers_running</h1>
+                    </div>
+                    <div class="row">
+                        <p>Servers Running</p>
                     </div>
                 </div>
+            </div>
 
+        </div>
+    </div>
+    <div class="Uptime section section-sm" id="server-uptime-section">
+        <div class="section-header">
+            <h3>Uptime</h3>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <div class="circle-md-dark"><i class="far fa-clock"></i></div>
+                <p>00:08:40</p>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <!-- Server Uptime Section -->
-        <div class="section section-sm" id="server-uptime-section">
-            <div class="section-header">
-                <h3>Uptime</h3>
-            </div>
-            <div class="section-body">
-                <div class="row">
-                    <div class="circle-md-dark"><i class="far fa-clock"></i></div>
-                    <p>00:08:40</p>
-                </div>
+    <div class="Usage section section-sm" id="server-ram-usage-section">
+        <div class="section-header">
+            <h3>RAM Usage</h3>
+        </div>
+        <div class="section-body">
+            <div class="row">
+                <p>3.23</p>
+                <div class="circle-md-dark" id="ram-circle">GB</div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="section section-sm" id="server-ram-usage-section">
-            <div class="section-header">
-                <h3>RAM Usage</h3>
-            </div>
-            <div class="section-body">
-                <div class="row">
-                    <p>3.23</p>
-                    <div class="circle-md-dark" id="ram-circle">GB</div>
-                </div>
-            </div>
+    <div class="Servers section section-lg section-expanded" id="server-list-section">
+        <div class="section-header">
+            <h3>Servers</h3>
         </div>
-    </div>
-</div>
-
-
-<div class="section section-lg section-expanded" id="server-list-section">
-    <div class="section-header">
-        <h3>Servers</h3>
-    </div>
-    <div class="section-body">
-        <ul>
-            @Html.Partial("Templates/ServerListItem", ServersListModel.Singleton)
-        </ul>
+        <div class="section-body">
+            <ul>
+                @Html.Partial("Templates/ServerListItem", ServersListModel.Singleton)
+            </ul>
+        </div>
     </div>
 </div>
