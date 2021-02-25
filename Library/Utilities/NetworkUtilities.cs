@@ -1,35 +1,72 @@
 ﻿
 using com.drewchaseproject.net.asp.mc.OlegMC.Library.Data;
-using Mono.Nat;
+using Open.Nat;
+using System;
+using System.Threading;
 
 namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Utilities
 {
+    /// <summary>
+    /// Contains Utilities for Networking
+    /// <br />
+    /// Ex: Port Mapping
+    /// </summary>
     public class NetworkUtilities
     {
+        private static readonly ChaseLabs.CLLogger.Interfaces.ILog log = ChaseLabs.CLLogger.LogManger.Init().SetLogDirectory(Values.Singleton.LogFile);
+        private static NetworkUtilities _singleton;
+        public static NetworkUtilities Singleton => _singleton == null ? new NetworkUtilities() : _singleton;
+
+        private readonly NatDiscoverer discover = new NatDiscoverer();
+        private readonly CancellationTokenSource cts = new CancellationTokenSource(10000);
+        private readonly NatDevice device;
+        private bool canForward = true;
+
+        public NetworkUtilities()
+        {
+            _singleton = this;
+
+            try
+            {
+                device = discover.DiscoverDeviceAsync(PortMapper.Upnp, cts).Result;
+            }
+            catch (NatDeviceNotFoundException)
+            {
+                canForward = false;
+                log.Info("NAT UPNP is not enabled on the router\nWill have to manually port forward");
+            }
+            catch
+            {
+                canForward = false;
+                log.Info("Unknown Error while trying to discover NAT UPNP Settings on your router\nWill have to manually port forward");
+            }
+        }
+
         /// <summary>
         /// Opens Specific Ports to the Public Network
         /// </summary>
         /// <param name="ports"></param>
-        public static void PortForward(params int[] ports)
+        public async void PortForward(params int[] ports)
         {
-            foreach (int port in ports)
+            if (canForward)
             {
-                NatUtility.DeviceFound += (s, a) =>
+                foreach (int port in ports)
                 {
-                    INatDevice device = a.Device;
-
-                    //Run When Device is Found
-                    device.CreatePortMap(new Mapping(Protocol.Udp, port, port));
-                    System.Console.WriteLine($"Opening Port for {port}");
-
-                };
-                //NatUtility.DeviceLost += (s, a) =>
-                //{
-                //};
-                NatUtility.StartDiscovery();
+                    try
+                    {
+                        Mapping map = new Mapping(Protocol.Tcp, port, port, "OlegMC");
+                        await device.CreatePortMapAsync(map);
+                        log.Info($"Opening Port {port}");
+                        Values.Singleton.OpenPorts.Add(map);
+                    }
+                    catch (Exception e)
+                    {
+                        log.Info($"Unknown Error Has Occurred while trying to port forward port {port}\nWill have to manually port forward\nERROR: {e.Message}\n\n{e.StackTrace}");
+                        canForward = false;
+                        return;
+                    }
+                }
             }
-            if (Values.Singleton.openPorts == null) Values.Singleton.openPorts = new System.Collections.Generic.List<int>();
-            Values.Singleton.openPorts.AddRange(ports);
         }
 
         /// <summary>
@@ -37,22 +74,47 @@ namespace com.drewchaseproject.net.asp.mc.OlegMC.Library.Utilities
         /// <para>Leave Paramater Blank for All Open</para>
         /// </summary>
         /// <param name="ports"></param>
-        public static void ClosePorts(params int[] ports)
+        public async void ClosePorts(params int[] ports)
         {
-            if (ports == null || ports.Length == 0) ports = Values.Singleton.openPorts.ToArray();
-            foreach (int port in ports)
+            if (canForward)
             {
-                NatUtility.DeviceFound += (s, a) =>
+                if (ports == null || ports.Length == 0)
                 {
-                    INatDevice device = a.Device;
+                    foreach (Mapping map in Values.Singleton.OpenPorts)
+                    {
 
-                    //Run When Device is Found
-                    device.DeletePortMap(new Mapping(Protocol.Udp, port, port));
-                    System.Console.WriteLine($"Closeing Port for {port}");
-
-                };
+                        await device.DeletePortMapAsync(map);
+                        log.Info($"Closing Mapping for port {map.PrivatePort}.");
+                    }
+                    Values.Singleton.OpenPorts.Clear();
+                }
+                else
+                {
+                    foreach (int port in ports)
+                    {
+                        Mapping map = null;
+                        Values.Singleton.OpenPorts.ForEach(s =>
+                        {
+                            if (s.PrivatePort == port && s.PublicPort == port)
+                            {
+                                map = s;
+                            }
+                        });
+                        if (map != null)
+                        {
+                            await device.DeletePortMapAsync(map);
+                            Values.Singleton.OpenPorts.Remove(map);
+                            log.Info($"Closing Mapping for port {port}.");
+                        }
+                        else
+                        {
+                            log.Info($"No Mapping for port {port} was found.\nNothing Happend!");
+                            return;
+                        }
+                    }
+                }
             }
-        }
 
+        }
     }
 }
